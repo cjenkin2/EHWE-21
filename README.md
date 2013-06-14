@@ -1,10 +1,13 @@
-EHWE-27
+EHWE-21
 =======
 
-Initial Low-Volume Test of i.MX53
+Stress testing i.MX53 Boards
 
 vpu_test
 --------
 
 gpu_test
 --------
+
+network_test
+------------
