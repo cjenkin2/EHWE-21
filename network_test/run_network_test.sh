@@ -17,20 +17,12 @@ sudo dhclient wlan0
 # a network connection is established
 
 #Run network test commands
-wget -b http://www.ubuntu.com/start-download?distro=desktop&bits=32&release=lts &
+wget -a wget-ubuntu.log -b http://www.ubuntu.com/start-download?distro=desktop&bits=32&release=lts &
 
-#ping test
-#attribution: www.cyberciti.biz/tips/simple-linux-and-unix-system-monitoring-with-ping-command-and-scripts.html
 HOSTS="genesi-tech.com google.com apple.com"
 DEADLINE=90
 
-for myHost in $HOSTS
+for HOST in $HOSTS
 do
-	count=$(sudo ping -i 0 -w $DEADLINE $myHost | grep 'received' | awk -F',' '{ print $2 }' | awk '{ print $1 }')
-	echo "Count is $count"
-	if [ $count -eq 0 ]; then
-		echo "Could not reach host $myHost"
-	fi
+	./flood-ping.sh $HOST $DEADLINE
 done
-#ping -c 100 google.com &
-#sudo ping -f genesi-tech.com &

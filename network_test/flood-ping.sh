@@ -12,9 +12,12 @@ else
 	DEADLINE=$2
 fi
 
+#ping test
+#attribution: www.cyberciti.biz/tips/simple-linux-and-unix-system-monitoring-with-ping-command-and-scripts.html
 OUTPUT=$(sudo ping -v -i 0 -w $DEADLINE $HOSTNAME)
 SUMMARY=$(echo "$OUTPUT" | grep 'received')
 COUNT=$(echo $SUMMARY | awk -F',' '{ print $2 }' | awk '{ print $1 }')
+
 echo "------------------------------------------------------" >> flood-ping.log
 echo $(date) >> flood-ping.log
 echo "$OUTPUT" >> flood-ping.log
