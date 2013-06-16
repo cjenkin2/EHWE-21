@@ -12,11 +12,14 @@ else
 	DEADLINE=$2
 fi
 
-STATUS_MSG=$(sudo ping -i 0 -w $DEADLINE $HOSTNAME | grep 'received')
-COUNT=$(echo $STATUS_MSG | awk -F',' '{ print $2 }' | awk '{ print $1 }')
-echo "ping: $STATUS_MSG" > flood-ping.log
+OUTPUT=$(sudo ping -v -i 0 -w $DEADLINE $HOSTNAME)
+SUMMARY=$(echo "$OUTPUT" | grep 'received')
+COUNT=$(echo $SUMMARY | awk -F',' '{ print $2 }' | awk '{ print $1 }')
+echo "------------------------------------------------------" >> flood-ping.log
+echo $(date) >> flood-ping.log
+echo "$OUTPUT" >> flood-ping.log
 
-if [ "$STATUS_MSG" = "" ]; then
+if [ "$SUMMARY" = "" ]; then
 	COUNT=0
 fi
 
