@@ -33,10 +33,9 @@ echo "$DATE"                        >> $LOGFILE
 echo "Decoding: $VID_FILE_BASENAME" >> $LOGFILE
 echo "----------------------------" >> $LOGFILE
 
-GST_LAUNCH_OUTPUT=$(gst-launch-0.10 playbin2 uri=file://"$1")
+GST_LAUNCH_OUTPUT=$(gst-launch-0.10 playbin2 uri=file://"$1" 2>&1)
 
 echo "$GST_LAUNCH_OUTPUT" >> $LOGFILE
-echo "----------------------------" >> $LOGFILE
 
 #rename generated .dot files
 for DOTFILE in $(ls $GST_DEBUG_DUMP_DOT_DIR/* | grep "gst-launch")
