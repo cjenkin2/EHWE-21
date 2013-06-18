@@ -9,19 +9,41 @@ then
 	exit 65 # bad arguments
 fi
 
+#helper functions
+function set_date()
+{
+        DATE="$(date)"
+        DATE="${DATE// /_}"
+        DATE="${DATE//:/-}"
+}
+
+#export variables
+export GST_DEBUG_DUMP_DOT_DIR="$(pwd)/temp"
+
 #local variable
 VID_FILE_BASENAME=$(basename $1)
+OUTDIR="$(pwd)/output"
+GRAPHDIR="$(pwd)/graphs"
 LOGFILE="decode.log"
-DATE="$(date)"
-DATE="${DATE// /_}"
-DATE="${DATE//:/-}"
 
 #code
-echo "----------------------------" >> $LOGFILE
+set_date
+echo "============================" >> $LOGFILE
 echo "$DATE"                        >> $LOGFILE
 echo "Decoding: $VID_FILE_BASENAME" >> $LOGFILE
+echo "----------------------------" >> $LOGFILE
 
 GST_LAUNCH_OUTPUT=$(gst-launch-0.10 playbin2 uri=file://"$1")
 
 echo "$GST_LAUNCH_OUTPUT" >> $LOGFILE
 echo "----------------------------" >> $LOGFILE
+
+#rename generated .dot files
+for DOTFILE in $(ls $GST_DEBUG_DUMP_DOT_DIR/* | grep "gst-launch")
+do
+	mv $DOTFILE $OUTDIR/$VID_FILE_BASENAME.$DATE.$(basename $DOTFILE)
+done
+
+#make graph of PAUSED_READY
+READY_PAUSED_DOT=$(ls $OUTDIR/* | grep "$DATE" | grep "READY_PAUSED")
+dot -Tpng -o"$GRAPHDIR/$(basename $READY_PAUSED_DOT).png" $READY_PAUSED_DOT

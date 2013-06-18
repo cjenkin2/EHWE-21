@@ -7,19 +7,28 @@ VIDEO_DIR="$(pwd)/clips"
 VIDEOS=$(ls "$VIDEO_DIR/"*)
 DECODELOG="decode.log"
 
-DATE="$(date)"
-DATE="${DATE// /_}"
-DATE="${DATE//:/-}"
-
 export GST_DEBUG_DUMP_DOT_DIR=$OUTDIR
+export DATE=""
 
+function set_date()
+{
+	DATE="$(date)"
+	DATE="${DATE// /_}"
+	DATE="${DATE//:/-}"
+}
 
-echo "================================="
+export -f set_date
+
+echo "=================================" >> $DECODELOG
 
 #test decoder with gst-launch
 for VIDEO in $(echo "$VIDEOS" | grep "big_buck_bunny_720x526_surround.clip2.avi")
 do
-	
+	set_date
+	echo "---------------------------------" >> $DECODELOG
+	echo "$DATE"                             >> $DECODELOG
+	echo "Decoding: $VIDEO"                  >> $DECODELOG
+
 	./test_decoder.sh $VIDEO
 
 	for DOTFILE in $(ls $OUTDIR/* | grep "gst-launch")

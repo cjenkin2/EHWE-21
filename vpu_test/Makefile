@@ -5,4 +5,4 @@ nothing:
 	echo "Nothing to make"
 
 clean:
-	rm ./$(OUTDOTDIR)/*png ./$(OUTDOTDIR)/*dot rm ./$(OUTGRAPHDIR)/*png
+	rm ./$(OUTDOTDIR)/*png ./$(OUTDOTDIR)/*dot ./$(OUTGRAPHDIR)/*png ./decode.log ./temp/*dot
