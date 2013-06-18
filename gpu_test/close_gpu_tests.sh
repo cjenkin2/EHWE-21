@@ -5,5 +5,5 @@
 killall tiger
 killall tiger_ri
 killall torusknot
-killall simpledraw
+killall simple_draw
 killall es11ex
