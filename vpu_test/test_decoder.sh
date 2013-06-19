@@ -23,6 +23,7 @@ export GST_DEBUG_DUMP_DOT_DIR="$(pwd)/temp"
 #local variable
 VID_FILE_BASENAME=$(basename $1)
 OUTDIR="$(pwd)/output"
+DOTDIR="$(pwd)/dots"
 GRAPHDIR="$(pwd)/graphs"
 LOGFILE="decode.log"
 
@@ -40,9 +41,9 @@ echo "$GST_LAUNCH_OUTPUT" >> $LOGFILE
 #rename generated .dot files
 for DOTFILE in $(ls $GST_DEBUG_DUMP_DOT_DIR/* | grep "gst-launch")
 do
-	mv $DOTFILE $OUTDIR/$VID_FILE_BASENAME.$DATE.$(basename $DOTFILE)
+	mv $DOTFILE $DOTDIR/decode.$VID_FILE_BASENAME.$DATE.$(basename $DOTFILE)
 done
 
 #make graph of PAUSED_READY
-READY_PAUSED_DOT=$(ls $OUTDIR/* | grep "$DATE" | grep "READY_PAUSED")
+READY_PAUSED_DOT=$(ls $DOTDIR/* | grep "$DATE" | grep "READY_PAUSED")
 dot -Tpng -o"$GRAPHDIR/$(basename $READY_PAUSED_DOT).png" $READY_PAUSED_DOT
