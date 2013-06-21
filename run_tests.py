@@ -17,6 +17,7 @@ def usage():
         print "usage:" , sys.argv[0] , """[-[spr] <tests...>]*
     i.e. specify 0 or more times how (sequential, parallel, or random) 
     to run a given list of tests """ , tests
+        print ""
 	print "    e.g. '$ " , sys.argv[0] , """-p gpu vpu -r network filesystem' 
     would run the gpu and vpu tests in parallel, 
     and then run the network and filesystem tests sequentially in random order"""
