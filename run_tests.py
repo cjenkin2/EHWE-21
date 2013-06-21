@@ -15,10 +15,10 @@ def usage():
 
 flags = ['-s', '-p', 'r']
 tests_lookup = {
-        'network'    : './network_test/run_network_test.sh',
-        'vpu'        : './vpu_test/run_vpu_tests.sh',
-        'gpu'        : './gpu_test/run_gpu_tests.sh',
-        'filesystem' : './memory_test/run_filesystem_test.sh'
+        'network'    : 'cd ./network_test; ./run_network_test.sh',
+        'vpu'        : 'cd ./vpu_test; ./run_vpu_test.sh',
+        'gpu'        : 'cd ./gpu_test; ./run_gpu_test.sh',
+        'filesystem' : 'cd ./memory_test; ./run_filesystem_test.sh'
 }
 tests = tests_lookup.keys() # ['network', 'vpu', 'gpu', 'filesystem']
 
@@ -40,14 +40,15 @@ def append_list_sane(xs, ys):
 def exec_test_block(block):
         if block[0] == '-s': # sequential
                 for test in block[1:]:
-                        subprocess.call(tests_lookup[arg])
+                        subprocess.call(tests_lookup[test], shell=True)
         elif block[0] == '-r':
                 tests = block[1:]
                 random.shuffle(tests)
                 for test in tests:
-                        subprocess.call(tests_lookup[arg])
+                        subprocess.call(tests_lookup[test], shell=True)
         else: # must be -p
-                pass
+                for test in block[1:]:
+                        subprocess.call(tests_lookup[test] + " &", shell=True)
 
 # list of tests to exec following a single flag. way to exec is first arg
 test_block = []
