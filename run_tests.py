@@ -4,15 +4,6 @@ import sys
 import subprocess
 import random
 
-def usage():
-	print "usage:" , sys.argv[0] , """[-[spr] <tests...>]*
-    i.e. specify 0 or more times how (sequential, parallel, and random) 
-    to run a given list of tests (gpu, vpu, network, filesystem)
-"""
-	print "    e.g. '$ " , sys.argv[0] , """-p gpu vpu -r network filesystem' 
-    would run the gpu and vpu tests in parallel, 
-    and then run the network and filesystem tests sequentially in random order"""
-
 flags = ['-s', '-p', 'r']
 tests_lookup = {
         'network'    : 'cd ./network_test; ./run_network_test.sh',
@@ -21,6 +12,14 @@ tests_lookup = {
         'filesystem' : 'cd ./memory_test; ./run_filesystem_test.sh'
 }
 tests = tests_lookup.keys() # ['network', 'vpu', 'gpu', 'filesystem']
+
+def usage():
+        print "usage:" , sys.argv[0] , """[-[spr] <tests...>]*
+    i.e. specify 0 or more times how (sequential, parallel, or random) 
+    to run a given list of tests """ , tests
+	print "    e.g. '$ " , sys.argv[0] , """-p gpu vpu -r network filesystem' 
+    would run the gpu and vpu tests in parallel, 
+    and then run the network and filesystem tests sequentially in random order"""
 
 # print usage if run with no arguments
 if len(sys.argv) == 1: # nothing to run
@@ -78,12 +77,3 @@ for arg in sys.argv[1:]:
 
 for block in all_test_blocks:
         exec_test_block(block)
-
-#from optparse import OptionParser
-
-#parser = OptionParser()
-#parser.add_option("-s", "--sequential", dest="filename", 
-#	help="write report to FILE", metavar="FILE")
-
-#(options, args) = parser.parse_args()
-
