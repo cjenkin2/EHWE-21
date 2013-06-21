@@ -75,7 +75,8 @@ for arg in sys.argv[1:]:
                         usage()
                         exit()
 
-print all_test_blocks
+for block in all_test_blocks:
+        exec_test_block(block)
 
 #from optparse import OptionParser
 
