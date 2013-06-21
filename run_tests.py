@@ -47,7 +47,7 @@ def exec_test_block(block):
                 for test in tests:
                         subprocess.call(tests_lookup[arg])
         else: # must be -p
-                
+                pass
 
 # list of tests to exec following a single flag. way to exec is first arg
 test_block = []
