@@ -4,7 +4,7 @@
 
 # expects two argumets 
 #    the name of the file and the output cap of the mfw_vpuencoder
-if  [[ ($# -ne 2) || ($# -ne 3) ]]
+if  [[ ($# -ne 2) && ($# -ne 3) ]]
 then
 	echo "usage: $0 <intput-vid-file> <mfw_vpuencoder_cap> [mfw_vpuencoder_params]"
 	echo "e.g. $0 "'$BIG_BUCK_BUNNY '"'video/x-h264'"
@@ -42,7 +42,8 @@ GRAPHDIR="$(pwd)/graphs"
 #generate appropriate extension from cap
 EXT=$(echo $CAP | cut -d"-" -f2)
 VID_FILE_BASENAME=$(basename $VIDEO)
-OUTPUT_FILE="$OUTDIR/$(basename $VIDEO).$EXT" 
+OUTPUT_FILE="$OUTDIR/$(basename $VIDEO).$EXT" # warning does not work for mpeg
+MD5="$OUTPUT_FILE.md5sum"
 
 #code
 set_date
@@ -54,6 +55,7 @@ echo "params  : $PARAMS"            >> $LOGFILE
 echo "----------------------------" >> $LOGFILE
 
 GST_LAUNCH_OUTPUT=$(gst-launch filesrc location=$VIDEO ! decodebin2 ! queue ! mfw_vpuencoder $PARAMS ! $CAP ! filesink location=$OUTPUT_FILE 2>&1)
+md5sum $OUTPUT_FILE > $MD5
 
 echo "$GST_LAUNCH_OUTPUT" >> $LOGFILE
 

@@ -1,0 +1,2 @@
+#ignore all wpa.conf files
+wpa*conf
