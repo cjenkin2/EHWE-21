@@ -20,7 +20,7 @@ def usage():
         print ""
 	print "    e.g. '$ " , sys.argv[0] , """-p gpu vpu -r network memory' 
     would run the gpu and vpu tests in parallel, 
-    and then run the network and filesystem tests sequentially in random order"""
+    and then run the network and memory tests sequentially in random order"""
 
 # print usage if run with no arguments
 if len(sys.argv) == 1: # nothing to run
