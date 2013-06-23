@@ -7,3 +7,5 @@ clean:
 clean-wget:
 	rm ./*distro\=desktop
 
+interrupt:
+	sudo killall -9 wpa_supplicant
