@@ -9,16 +9,16 @@ tests_lookup = {
         'network'    : 'cd ./network_test; ./run_network_test.sh',
         'vpu'        : 'cd ./vpu_test; ./run_vpu_test.sh',
         'gpu'        : 'cd ./gpu_test; ./run_gpu_test.sh',
-        'filesystem' : 'cd ./memory_test; ./run_filesystem_test.sh'
+        'filesystem' : 'cd ./memory_test; ./run_memory_test.sh'
 }
-tests = tests_lookup.keys() # ['network', 'vpu', 'gpu', 'filesystem']
+tests = tests_lookup.keys() # ['network', 'vpu', 'gpu', 'memory']
 
 def usage():
         print "usage:" , sys.argv[0] , """[-[spr] <tests...>]*
     i.e. specify 0 or more times how (sequential, parallel, or random) 
     to run a given list of tests """ , tests
         print ""
-	print "    e.g. '$ " , sys.argv[0] , """-p gpu vpu -r network filesystem' 
+	print "    e.g. '$ " , sys.argv[0] , """-p gpu vpu -r network memory' 
     would run the gpu and vpu tests in parallel, 
     and then run the network and filesystem tests sequentially in random order"""
 
