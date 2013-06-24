@@ -8,7 +8,7 @@ flags = ['-s', '-p', 'r']
 tests_lookup = {
         'network'    : 'cd ./network_test; ./run_network_test.sh',
         'vpu'        : 'cd ./vpu_test; ./run_vpu_test.sh',
-        'vpu_encoder': 'cd ./vpu_test; ./run_encoder_test.sh'
+        'vpu_encoder': 'cd ./vpu_test; ./run_encoder_test.sh',
         'gpu'        : 'cd ./gpu_test; ./run_gpu_test.sh',
         'filesystem' : 'cd ./memory_test; ./run_memory_test.sh'
 }
