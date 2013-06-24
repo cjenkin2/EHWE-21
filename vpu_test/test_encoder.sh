@@ -41,7 +41,7 @@ OUTDIR="$(pwd)/encoder/vids"
 DOTDIR="$(pwd)/dots"
 GRAPHDIR="$(pwd)/graphs"
 #generate appropriate extension from cap
-EXT=$(echo $CAP | cut -d"-" -f2)
+EXT=$(echo $CAP | cut -d"/" -f2)
 VID_FILE_BASENAME=$(basename $VIDEO)
 OUTPUT_FILE="$OUTDIR/$(basename $VIDEO).$EXT" # warning does not work for mpeg
 MD5="$OUTPUT_FILE.md5sum"
@@ -55,7 +55,7 @@ echo "format  : $CAP"               >> $LOGFILE
 echo "params  : $PARAMS"            >> $LOGFILE
 echo "----------------------------" >> $LOGFILE
 
-GST_LAUNCH_OUTPUT=$(gst-launch filesrc location=$VIDEO ! decodebin2 ! queue ! mfw_vpuencoder $PARAMS ! $CAP ! filesink location=$OUTPUT_FILE 2>&1)
+GST_LAUNCH_OUTPUT=$(gst-launch filesrc location=$VIDEO ! decodebin2 ! queue ! mfw_vpuencoder $PARAMS ! $CAP ! tee name=t ! queue ! filesink location=$OUTPUT_FILE t. ! queue ! avimux ! filesink location=$OUTPUT_FILE.avi 2>&1)
 md5sum $OUTPUT_FILE > $MD5
 
 echo "$GST_LAUNCH_OUTPUT" >> $LOGFILE
