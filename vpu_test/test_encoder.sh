@@ -7,7 +7,8 @@
 if  [[ ($# -ne 2) && ($# -ne 3) ]]
 then
 	echo "usage: $0 <intput-vid-file> <mfw_vpuencoder_cap> [mfw_vpuencoder_params]"
-	echo "e.g. $0 "'$BIG_BUCK_BUNNY '"'video/x-h264'"
+	echo "e.g. : $0 "'$BIG_BUCK_BUNNY '"'video/x-h264'"
+	echo "     : $0 "'$SINTEL'"video/mpeg codec-type=0"
 	exit 65 # bad arguments
 fi
 
