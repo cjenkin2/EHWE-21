@@ -5,19 +5,25 @@ DEVICES="/dev/mmcblk0"
 BAD_BLK_LOG="./badblocks.log"
 MNT="./mount_point"
 
-
-# test for bad blocks in devices
 for DEVICE in $DEVICES
 do
+	# test blocks
 	sudo badblocks -o $BAD_BLK_LOG $DEVICE 
 
-	sudo mount $DEVICE $MNT
+	# test read/write
+	sudo mount "$DEVICE"p1 $MNT # always mount partition 1
 	ret=$?
 
 	if [[ $ret -eq 0 ]] # successfully mounted
 	then
-		./test_read_write.sh
+		# sudo ./test_read_write.sh $MNT/loremipsum.txt
+		sudo zcat loremipsum.txt.gz > $MNT/loremipsum.txt
+		sudo umount "$DEVICE"p1
+		sudo mount "$DEVICE"p1 $MNT # assumes that if it worked once it will twice
+		echo $(./md5sum_compare.sh loremipsum.txt.md5sum $MNT/loremipsum.txt)
 	fi
+
+	# test performance
 
 	sudo umount $DEVICE
 done
