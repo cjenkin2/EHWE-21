@@ -3,6 +3,7 @@
 #DEVICES="/dev/sda /dev/mmcblk0"
 DEVICES="/dev/mmcblk0"
 BAD_BLK_LOG="./badblocks.log"
+BENCHMARK_LOG="./benchmark.log"
 MNT="./mount_point"
 
 for DEVICE in $DEVICES
@@ -24,6 +25,10 @@ do
 	fi
 
 	# test performance
+	# read
+	hdparm -t $DEVICE > $BENCHMARK_LOG
+	# write
+	sudo dd count=1k bs=1M if=/dev/null of=$MNT/nothing.dat
 
 	sudo umount $DEVICE
 done
