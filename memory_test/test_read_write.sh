@@ -11,6 +11,6 @@ fi
 
 OUTFILE=$1
 
-zcat loremipsum_2200.txt.gz > $OUTFILE
+zcat loremipsum.txt.gz > $OUTFILE
 
-echo $(./md5sum_compare.sh loremipsum_2200.txt.md5sum $OUTFILE)
+echo $(./md5sum_compare.sh loremipsum.txt.md5sum $OUTFILE)
