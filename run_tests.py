@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #TODO argument parsing
-#TODO --help
+#TODO refactor execute_test_block!
 
 import sys
 import subprocess
@@ -72,7 +72,7 @@ def exec_test_block(block):
                 random.shuffle(tests)
                 for test in tests:
                         subprocess.call(tests_lookup[test].command, shell=True)
-        elif block[0] == '-p'
+        elif block[0] == '-p':
                 for test in block[1:]:
                         subprocess.call(tests_lookup[test].command + " &", shell=True)
         else:
@@ -86,19 +86,51 @@ all_test_blocks = []
 sys.argv.append('-s') # hackery to get last block
 
 # Argument parsing (minus help) as a state table of a Finite State Automaton
-#        flag: flags            | test : tests          | " : argument_delimit  |
+#       | -word (flag)          | word (arg or test)    | " (argument_delimit)
 #------------------------------------------------------------------------
-# INIT : start new test block   | Error                 | Error                 |
-#       new state: TESTS        |                       |                       |
+# INIT: | start new test block  | Error                 | Error                 |
+#       |new state: TESTS       |                       |                       |
 #------------------------------------------------------------------------
-# TESTS: start new test block   | append to test block  | ???
-#       new state: TESTS        | new state: TESTS      |
+# TESTS:| start new test block  | append to test block  | no action
+#       |new state: TESTS       | new state: TESTS      | new state: ARGS
+#------------------------------------------------------------------------
+# ARGS: | append to prev test   | append to prev. test  | no action
+#       | new state: ARGS       | new state: ARGS       | new state: TESTS
 #------------------------------------------------------------------------
 
 state="INIT"
 for arg in sys.argv[1:]:
         if state=="INIT": # looking for a flag
+                if not (arg in flags): # bad flag
+                        print "Error:" , arg , "is not a valid flag!"
+                        usage()
+                        exit(1)
+                else:
+                        test_block.append(arg) # action
+                        state="TESTS" # transition
+        elif state=="TESTS":
+                if arg in tests:
+                        test_block.append(tests_lookup[arg].command)  # action
+                        # state="TESTS"         # transition
+                elif arg in flags:
+                        append_list_sane(all_test_blocks, test_block) # one whole test block
+                        test_block = [arg]      # action(s)
+                        # state = "TESTS"       # transition
+                elif arg == '"':
+                        state = "ARGS"          # transition (no action)
+                else:
+                        print "Error:" , arg , "is not a valid test or flag"
+        elif state=="ARGS":
+                if arg == '"':
+                        state="TESTS"           # transition (no action)
+                else:
+                        test_block[-1] = test_block[-1] + " " + arg
 
+for block in all_test_blocks:
+        print block
+
+print sys.argv
+"""                        
 for arg in sys.argv[1:]:
         if test_block == []: # looking for a flag to run a fresh set of tests
                 if not (arg in flags): # bad flag
@@ -117,6 +149,6 @@ for arg in sys.argv[1:]:
                         print "Error:" , arg , "is not a valid test!"
                         usage()
                         exit(1)
-
-for block in all_test_blocks:
-        exec_test_block(block)
+"""
+#for block in all_test_blocks:
+#        exec_test_block(block)
