@@ -23,14 +23,14 @@ tests_lookup = {
 tests = tests_lookup.keys() # ['network', 'vpu', 'gpu', 'memory']
 
 def usage():
-        print "usage:" , sys.argv[0] , """[-<spr> <test [" <args...> "]>* ]*
+        print "usage:" , sys.argv[0] , """<-<spr> <test [ <args...> ]>* >*
     i.e. specify 0 or more times how (sequential, parallel, or random) 
     to run a given list of tests. """ , tests
         print ""
         print """    Each test can be optionally followed by command line arguments 
-    surrounded by " (whitespace is important!)"""
+    surrounded by [  ] (whitespace is important!)"""
         print ""
-	print "    e.g. '$ " , sys.argv[0] , """-p gpu " 100 " vpu -r network memory " /dev/mmcblk0p2 "' 
+	print "    e.g. '$ " , sys.argv[0] , """-p gpu [ 100 ] vpu -r network memory [ /dev/mmcblk0p2 ]' 
     would run the gpu and vpu tests in parallel (running the gpu tests for only 100 frames), 
     and then run the network and memory tests sequentially in random order
     (with read, write, and performance tests on /dev/mmcblk0p2)"""
@@ -86,7 +86,7 @@ all_test_blocks = []
 sys.argv.append('-s') # hackery to get last block
 
 # Argument parsing (minus help) as a state table of a Finite State Automaton
-#       | -word (flag)          | word (arg or test)    | " (argument_delimit)
+#       | -word (flag)          | word (arg or test)    | () (argument_delimit)
 #------------------------------------------------------------------------
 # INIT: | start new test block  | Error                 | Error                 |
 #       |new state: TESTS       |                       |                       |
@@ -116,12 +116,12 @@ for arg in sys.argv[1:]:
                         append_list_sane(all_test_blocks, test_block) # one whole test block
                         test_block = [arg]      # action(s)
                         # state = "TESTS"       # transition
-                elif arg == '"':
+                elif arg == '[':
                         state = "ARGS"          # transition (no action)
                 else:
                         print "Error:" , arg , "is not a valid test or flag"
         elif state=="ARGS":
-                if arg == '"':
+                if arg == ']':
                         state="TESTS"           # transition (no action)
                 else:
                         test_block[-1] = test_block[-1] + " " + arg
