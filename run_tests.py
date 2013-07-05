@@ -45,7 +45,7 @@ if len(sys.argv) == 1: # nothing to run
 
 # test for "help" first
 if sys.argv[1] == '--help':
-        if len(sys.argv) == 2:
+        if len(sys.argv) == 2: # print usage if run with no tests
                 usage()
         else:
                 for test in sys.argv[2:]:
@@ -53,6 +53,7 @@ if sys.argv[1] == '--help':
         exit()
 
 # because Python's append isn't sane
+# edit: ok, because python's *lists* aren't sane.
 # append by value (shallow) rather than reference
 def append_list_sane(xs, ys):
         copy = []
@@ -71,9 +72,11 @@ def exec_test_block(block):
                 random.shuffle(tests)
                 for test in tests:
                         subprocess.call(tests_lookup[test].command, shell=True)
-        else: # must be -p
+        elif block[0] == '-p'
                 for test in block[1:]:
                         subprocess.call(tests_lookup[test].command + " &", shell=True)
+        else:
+                print "Debug message: a execution flag of '" , block[0] , ' here should be impossible'
 
 # list of tests to exec following a single flag. way to exec is first arg
 test_block = []
@@ -82,12 +85,26 @@ all_test_blocks = []
 
 sys.argv.append('-s') # hackery to get last block
 
+# Argument parsing (minus help) as a state table of a Finite State Automaton
+#        flag: flags            | test : tests          | " : argument_delimit  |
+#------------------------------------------------------------------------
+# INIT : start new test block   | Error                 | Error                 |
+#       new state: TESTS        |                       |                       |
+#------------------------------------------------------------------------
+# TESTS: start new test block   | append to test block  | ???
+#       new state: TESTS        | new state: TESTS      |
+#------------------------------------------------------------------------
+
+state="INIT"
+for arg in sys.argv[1:]:
+        if state=="INIT": # looking for a flag
+
 for arg in sys.argv[1:]:
         if test_block == []: # looking for a flag to run a fresh set of tests
                 if not (arg in flags): # bad flag
                         print "Error:" , arg , "is not a valid flag!"
                         usage()
-                        exit()
+                        exit(1)
                 else:
                         test_block.append(arg)
         else: # in the process of building a set of commands
@@ -99,7 +116,7 @@ for arg in sys.argv[1:]:
                 else:
                         print "Error:" , arg , "is not a valid test!"
                         usage()
-                        exit()
+                        exit(1)
 
 for block in all_test_blocks:
         exec_test_block(block)
