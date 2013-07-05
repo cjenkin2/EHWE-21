@@ -4,13 +4,18 @@ import sys
 import subprocess
 import random
 
+class Test:
+        def __init__(self, command, helptxt):
+                self.command = command
+                self.helptxt = helptxt
+
 flags = ['-s', '-p', 'r']
 tests_lookup = {
-        'network'    : 'cd ./network_test; ./run_network_test.sh',
-        'vpu'        : 'cd ./vpu_test; ./run_vpu_test.sh',
-        'vpu_encoder': 'cd ./vpu_test; ./run_encoder_test.sh',
-        'gpu'        : 'cd ./gpu_test; ./run_gpu_test.sh',
-        'filesystem' : 'cd ./memory_test; ./run_memory_test.sh'
+        'network'    : Test('cd ./network_test; ./run_network_test.sh', ""),
+        'vpu'        : Test('cd ./vpu_test; ./run_vpu_test.sh',""),
+        'vpu_encoder': Test('cd ./vpu_test; ./run_encoder_test.sh',""),
+        'gpu'        : Test('cd ./gpu_test; ./run_gpu_test.sh',""),
+        'filesystem' : Test('cd ./memory_test; ./run_memory_test.sh',"")
 }
 tests = tests_lookup.keys() # ['network', 'vpu', 'gpu', 'memory']
 
@@ -26,6 +31,8 @@ def usage():
     would run the gpu and vpu tests in parallel (running the gpu tests for only 100 frames), 
     and then run the network and memory tests sequentially in random order
     (with read, write, and performance tests on /dev/mmcblk0p2)"""
+	print ""
+	print """    Finally, you can also use --help <test> to get more information about a specific test"""
 
 # print usage if run with no arguments
 if len(sys.argv) == 1: # nothing to run
@@ -45,15 +52,15 @@ def append_list_sane(xs, ys):
 def exec_test_block(block):
         if block[0] == '-s': # sequential
                 for test in block[1:]:
-                        subprocess.call(tests_lookup[test], shell=True)
+                        subprocess.call(tests_lookup[test].command, shell=True)
         elif block[0] == '-r':
                 tests = block[1:]
                 random.shuffle(tests)
                 for test in tests:
-                        subprocess.call(tests_lookup[test], shell=True)
+                        subprocess.call(tests_lookup[test].command, shell=True)
         else: # must be -p
                 for test in block[1:]:
-                        subprocess.call(tests_lookup[test] + " &", shell=True)
+                        subprocess.call(tests_lookup[test].command + " &", shell=True)
 
 # list of tests to exec following a single flag. way to exec is first arg
 test_block = []
