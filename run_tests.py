@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+#TODO argument parsing
+#TODO --help
+
 import sys
 import subprocess
 import random
@@ -32,11 +35,21 @@ def usage():
     and then run the network and memory tests sequentially in random order
     (with read, write, and performance tests on /dev/mmcblk0p2)"""
 	print ""
-	print """    Finally, you can also use --help <test> to get more information about a specific test"""
+	print """    Finally, you can also use --help <test...> to get more information about a specific test
+    (--help must be the first argument encountered. If it is, no tests will be run)"""
 
 # print usage if run with no arguments
 if len(sys.argv) == 1: # nothing to run
         usage()
+        exit()
+
+# test for "help" first
+if sys.argv[1] == '--help':
+        if len(sys.argv) == 2:
+                usage()
+        else:
+                for test in sys.argv[2:]:
+                        print test , ": " , tests_lookup[test].helptxt
         exit()
 
 # because Python's append isn't sane
