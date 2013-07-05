@@ -15,13 +15,17 @@ tests_lookup = {
 tests = tests_lookup.keys() # ['network', 'vpu', 'gpu', 'memory']
 
 def usage():
-        print "usage:" , sys.argv[0] , """[-[spr] <tests...>]*
+        print "usage:" , sys.argv[0] , """[-<spr> <test [" <args...> "]>* ]*
     i.e. specify 0 or more times how (sequential, parallel, or random) 
-    to run a given list of tests """ , tests
+    to run a given list of tests. """ , tests
         print ""
-	print "    e.g. '$ " , sys.argv[0] , """-p gpu vpu -r network memory' 
-    would run the gpu and vpu tests in parallel, 
-    and then run the network and memory tests sequentially in random order"""
+        print """    Each test can be optionally followed by command line arguments 
+    surrounded by " (whitespace is important!)"""
+        print ""
+	print "    e.g. '$ " , sys.argv[0] , """-p gpu " 100 " vpu -r network memory " /dev/mmcblk0p2 "' 
+    would run the gpu and vpu tests in parallel (running the gpu tests for only 100 frames), 
+    and then run the network and memory tests sequentially in random order
+    (with read, write, and performance tests on /dev/mmcblk0p2)"""
 
 # print usage if run with no arguments
 if len(sys.argv) == 1: # nothing to run
