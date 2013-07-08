@@ -26,7 +26,7 @@ then
 	sudo bash -c "zcat loremipsum.txt.gz > $MNT/loremipsum.txt"
 	sudo umount "$DEVICE"
 	sudo mount "$DEVICE" $MNT # assumes that if it worked once it will twice
-	echo $(sudo ./md5sum_compare.sh loremipsum.txt.md5sum $MNT/loremipsum.txt) | tee -a filesystem.log | cat
+	echo "md5sum_compare.sh: " $(sudo ./md5sum_compare.sh loremipsum.txt.md5sum $MNT/loremipsum.txt) | tee -a filesystem.log | cat
 	echo "--------------------------------------------------------------------------------" >> filesystem.log
 
 	#cleanup
