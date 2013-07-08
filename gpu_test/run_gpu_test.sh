@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./amd_gpu_test.sh 300 4
+./amd_gpu_test.sh 1000 4

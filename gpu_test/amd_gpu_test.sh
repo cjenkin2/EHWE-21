@@ -2,12 +2,12 @@
 
 if [[ $# -ne 2 ]]
 then
-	echo "usage: $0 <time> <num_instances>"
-	echo "$0 runs <num_instances> of the available AMD GPU tests for <time> seconds"
+	echo "usage: $0 <frame_num> <num_instances>"
+	echo "$0 runs <num_instances> of the available AMD GPU tests concurrently each for <frame_num> frames"
 	exit 65 # bad arguments
 fi
 
-TIME=$1
+FRAMES=$1
 NUM_INSTANCES=$2
 
 # shaded out programs exit on <Enter> pressed, difficult to script
@@ -19,11 +19,6 @@ NUM_INSTANCES=$2
 
 for i in $(seq 1 $NUM_INSTANCES)
 do
-	torusknot 1000000000000000 &
-	simple_draw &
+	torusknot $FRAMES &
+	simple_draw -f $FRAMES &
 done
-
-sleep $TIME
-
-killall torusknot
-killall simple_draw
