@@ -46,7 +46,7 @@ tests_lookup = {
 """),
         'gpu'        : Test('cd ./gpu_test; ./run_gpu_test.sh',"""
     Runs OpenVP and Open GLES1&2 AMD graphics demos for Freescale i.MX processors.
-    Takes an optional argument specifying how many frames of the tests to render
+    Optionally takes two arguments specifying how many frames of the tests to render
     and how many instances of each available test to launch concurrently
     (default is 1000 frames and 4 instances).
 
@@ -79,7 +79,11 @@ def usage():
     and then run the network and memory tests sequentially in random order
     (with read, write, and performance tests on /dev/mmcblk0p2)"""
 	print ""
-	print """    Finally, you can also use --help <test...> to get more information about a specific test
+	print """    Sets of tests can also be repeated for an arbitrary duration
+    by following the tests with "--duration <time>", in which case
+    the tests will run for no less than <time> seconds."""
+	print ""
+	print """    Finally, you can also use --help <test...> to get more information about a specific test or tests
     (--help must be the first argument encountered. If it is, no tests will be run)"""
 
 # print usage if run with no arguments
@@ -128,14 +132,16 @@ def exec_test_block(block):
                 for proc in procs:
                         proc.wait()
         else:
-                print "Debug message: a execution flag of '" , block[0] , ' here should be impossible'
+                print "Debug message: a execution flag of '" , block[0] , "' here should be impossible'"
 
 # list of tests to exec following a single flag. way to exec is first arg
 test_block = []
 # all test blocks encountered in command line args
 all_test_blocks = []
 
-sys.argv.append('-s') # hackery to get last block
+# guarantee duration is always set
+if not (sys.argv[-2] == '--duration'):
+        sys.argv = sys.argv + ['--duration', '0']
 
 # Argument parsing (minus help) as a state table of a Finite State Automaton
 #       | -word (flag)          | word (arg or test)    | () (argument_delimit)
@@ -151,7 +157,7 @@ sys.argv.append('-s') # hackery to get last block
 #------------------------------------------------------------------------
 
 state="INIT"
-for arg in sys.argv[1:]:
+for arg in sys.argv[1:-2]:
         if state=="INIT": # looking for a flag
                 if not (arg in flags): # bad flag
                         print "Error:" , arg , "is not a valid flag!"
@@ -177,6 +183,15 @@ for arg in sys.argv[1:]:
                         state="TESTS"           # transition (no action)
                 else:
                         test_block[-1] = test_block[-1] + " " + arg
+
+#cleanup
+if state=="ARGS":
+        print sys.argv[0] , "ERROR: Did not finish parsing args for last test before end of arguments!"
+        exit(1)
+
+append_list_sane(all_test_blocks, test_block)
+
+print sys.argv[1:-2]
 
 for block in all_test_blocks:
         exec_test_block(block)
