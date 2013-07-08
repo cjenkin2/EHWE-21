@@ -20,5 +20,12 @@ NUM_INSTANCES=$2
 for i in $(seq 1 $NUM_INSTANCES)
 do
 	torusknot $FRAMES &
+	pids[2*$i]=$!
 	simple_draw -f $FRAMES &
+	pids[2*$i+1]=$!
+done
+
+for pid in "${pids[@]}"
+do
+	wait $pid
 done

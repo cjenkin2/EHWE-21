@@ -3,6 +3,7 @@
 import sys
 import subprocess
 import random
+import time
 
 class Test:
         def __init__(self, command, helptxt):
@@ -191,7 +192,14 @@ if state=="ARGS":
 
 append_list_sane(all_test_blocks, test_block)
 
-print sys.argv[1:-2]
+start_time = time.time()
+duration = int(sys.argv[-1])
 
-for block in all_test_blocks:
-        exec_test_block(block)
+# because python doesn't have do-while loops! D:< what kind of imperative language
+# doesn't have do-while loops? Even the stupid imperative subset of J has do-while loops!
+while True:
+        for block in all_test_blocks:
+                exec_test_block(block)
+        if duration < time.time() - start_time:
+                break
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
