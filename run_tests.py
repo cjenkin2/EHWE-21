@@ -53,7 +53,7 @@ tests_lookup = {
     e.g. $ ./run_tests.py -s gpu
          $ ./run_tests.py -s gpu [ 300 8 ]
 """),
-        'filesystem' : Test('cd ./memory_device_test; ./run_memory_device_test.sh',"""
+        'memory_device' : Test('cd ./memory_device_test; ./run_memory_device_test.sh',"""
     Tests a memory device for bad blocks, mounts device filesystem to ./memory_device_test/mount_point
     and writes on it ~1GiB of data, compares result to pre-generated hash of data,
     then benchmarks read/write speeds of device.
@@ -93,7 +93,12 @@ if sys.argv[1] == '--help':
                 usage()
         else:
                 for test in sys.argv[2:]:
-                        print test , ": " , tests_lookup[test].helptxt
+                        if test in tests:
+                                print test , ":" , tests_lookup[test].helptxt
+                        else:
+                                print test , ": ERROR: Test not found."
+                                print ""
+                                usage()
         exit()
 
 # because Python's append isn't sane
@@ -117,8 +122,11 @@ def exec_test_block(block):
                 for test in tests:
                         subprocess.call(test, shell=True)
         elif block[0] == '-p':
+                procs = []
                 for test in block[1:]:
-                        subprocess.call(test + " &", shell=True)
+                        procs.append(subprocess.Popen(test, shell=True))
+                for proc in procs:
+                        proc.wait()
         else:
                 print "Debug message: a execution flag of '" , block[0] , ' here should be impossible'
 
