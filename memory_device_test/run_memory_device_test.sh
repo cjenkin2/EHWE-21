@@ -1,13 +1,12 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]
+if [ $# -eq 1 ]
 then
-	echo "usage: $0 <device_filesystem>"
-	echo "e.g. $0 /dev/mmcblk0p3"
-	exit 65 # bad arguments
+	DEVICE=$1
+else
+	DEVICE="/dev/mmcblk0p3"
 fi
 
-DEVICE=$1
 MNT="./mount_point"
 
 ./badblocks_test.sh $DEVICE
