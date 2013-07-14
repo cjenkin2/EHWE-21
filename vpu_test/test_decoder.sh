@@ -34,7 +34,7 @@ echo "$DATE"                        >> $LOGFILE
 echo "Decoding: $VID_FILE_BASENAME" >> $LOGFILE
 echo "----------------------------" >> $LOGFILE
 
-GST_LAUNCH_OUTPUT=$(gst-launch-0.10 playbin2 uri=file://"$1" 2>&1)
+GST_LAUNCH_OUTPUT=$(gst-launch-0.10 playbin2 uri=file://"$1" video-sink="mfw_xvimagesink" 2>&1)
 
 echo "$GST_LAUNCH_OUTPUT" >> $LOGFILE
 

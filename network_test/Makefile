@@ -2,7 +2,7 @@ nothing:
 	echo "Nothing to make"
 
 clean:
-	rm ./*log; rm ./*distro\=desktop
+	rm ./*log; rm ./*distro\=desktop* wpa.tmp.conf
 
 clean-wget:
 	rm ./*distro\=desktop
