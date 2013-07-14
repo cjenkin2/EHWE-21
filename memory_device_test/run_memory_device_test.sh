@@ -1,17 +1,8 @@
 #!/bin/bash
 
-if [ $# -eq 1 ]
-then
-	DEVICE=$1
-else
-	DEVICE="/dev/mmcblk0p3"
-fi
-
-MNT="./mount_point"
+DEVICE=$(mount | grep / | cut -d" " -f-1)
+MNT="/"
 
 ./badblocks_test.sh $DEVICE
 ./filesystem_test.sh $DEVICE $MNT
 ./benchmark_test.sh $DEVICE $MNT
-
-# just in case
-sudo umount "$DEVICE"

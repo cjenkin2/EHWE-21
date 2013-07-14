@@ -9,10 +9,10 @@ fi
 DEVICE=$1
 MNT=$2
 
-sudo hdparm -t $DEVICE >> benchmark.log
+hdparm -t $DEVICE >> benchmark.log
 
 # mount to filesystem and write
-sudo mount $DEVICE $MNT
-sudo dd count=1k bs=1M if=/dev/zero of=$MNT/loremipsum.txt >> benchmark.log
-sudo umount $DEVICE
+dd count=1k bs=1M if=/dev/zero of=$MNT/nothing.dat >> benchmark.log
 
+#cleanup
+rm $MNT/nothing.dat

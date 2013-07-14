@@ -10,5 +10,5 @@ DEVICE=$1
 
 # test blocks
 echo $(date) >> badblocks.log
-sudo badblocks -o badblocks.log $DEVICE
+echo $(sudo badblocks $DEVICE) >> badblocks.log
 echo "------------------------------" >> badblocks.log

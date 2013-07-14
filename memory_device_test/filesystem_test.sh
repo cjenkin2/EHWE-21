@@ -9,28 +9,14 @@ fi
 DEVICE=$1
 MNT=$2
 
-sudo umount "$DEVICE"
-
 # test read/write
-sudo mount $DEVICE $MNT
-ret=$?
 
 echo $(date) >> filesystem.log
 
-echo "Tried to mount $DEVICE on $MNT: $ret" | tee -a filesystem.log | cat
+# sudo ./test_read_write.sh $MNT/loremipsum.txt
+zcat loremipsum.txt.gz > $MNT/loremipsum.txt
+echo "md5sum_compare.sh: " $(./md5sum_compare.sh loremipsum.txt.md5sum $MNT/loremipsum.txt) | tee -a filesystem.log | cat
+echo "--------------------------------------------------------------------------------" >> filesystem.log
 
-if [[ $ret -eq 0 ]] # successfully mounted
-then
-	# sudo ./test_read_write.sh $MNT/loremipsum.txt
-	sudo chmod 666 $MNT/*
-	sudo bash -c "zcat loremipsum.txt.gz > $MNT/loremipsum.txt"
-	sudo umount "$DEVICE"
-	sudo mount "$DEVICE" $MNT # assumes that if it worked once it will twice
-	echo "md5sum_compare.sh: " $(sudo ./md5sum_compare.sh loremipsum.txt.md5sum $MNT/loremipsum.txt) | tee -a filesystem.log | cat
-	echo "--------------------------------------------------------------------------------" >> filesystem.log
-
-	#cleanup
-	sudo rm $MNT/loremipsum.txt
-fi
-
-sudo umount $DEVICE
+#cleanup
+sudo rm $MNT/loremipsum.txt
