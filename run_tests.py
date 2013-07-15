@@ -41,7 +41,7 @@ tests_lookup = {
         'vpu_decoder': Test('cd ./vpu_test; ./run_vpu_decoder_tests.sh', """
     Just runs VPU Decoder tests, playing files in vpu_test/clips/ and
     generating debug information for the gstreamer pipelins in dots/ and graphs/.
-    This test is not run with arguments.
+    This test is run without arguments
 
     e.g. $ ./run_tests.py -s vpu_decoder
 """),
@@ -55,34 +55,33 @@ tests_lookup = {
          $ ./run_tests.py -s gpu [ 300 8 ]
 """),
         'memory_device' : Test('cd ./memory_device_test; ./run_memory_device_test.sh',"""
-    Tests a memory device for bad blocks, mounts device filesystem to ./memory_device_test/mount_point
-    and writes on it ~1GiB of data, compares result to pre-generated hash of data,
-    then benchmarks read/write speeds of device.
-    The device to test is set by argument.
-    By default this device is the 3rd filesystem partition on an SD card (/dev/mmcblk0p3).
+    Tests the memory device (NAND, MMC, PATA, etc) mounted to the root file system.
+    This test includes searching for bad blocks, writing ~1GiB of data and comparing output to
+    pre-created hash value, and benchmarking read/write speeds of the device.
 
-    e.g. $ ./run_tests.py -s filesystem
-         $ ./run_tests.py -s filesystem [ /dev/mmcblk0p3 ]
+    This test is run without arguments.
+
+    e.g. $ ./run_tests.py -s memory_device
 """)
 }
 tests = tests_lookup.keys() # ['network', 'vpu', 'vpu_encoder', 'gpu', 'filesystem']
 
 def usage():
-        print "usage:" , sys.argv[0] , """<-<spr> <test [ <args...> ]>* >*
+        print "usage:" , sys.argv[0] , """< -<spr> <test <[ <args...> ]>+ >* >* <--duration TIME>+
     i.e. specify 0 or more times how (sequential, parallel, or random) 
     to run a given list of tests. """ , tests
         print ""
         print """    Each test can be optionally followed by command line arguments 
     surrounded by [  ] (whitespace is important!)"""
         print ""
-	print "    e.g. '$ " , sys.argv[0] , """-p gpu [ 100 ] vpu -r network memory [ /dev/mmcblk0p2 ]' 
+	print "    e.g. '$ " , sys.argv[0] , """-p gpu [ 100 ] vpu -r memory_device network [ 1200 my_network_ssid passphrase ]' 
     would run the gpu and vpu tests in parallel (running the gpu tests for only 100 frames), 
     and then run the network and memory tests sequentially in random order
-    (with read, write, and performance tests on /dev/mmcblk0p2)"""
+    (running the network test for no shorter than 1200 seconds on the given network and passphrase)"""
 	print ""
 	print """    Sets of tests can also be repeated for an arbitrary duration
-    by following the tests with "--duration <time>", in which case
-    the tests will run for no less than <time> seconds."""
+    by following the tests with "--duration TIME", in which case
+    the tests will run for no less than TIME seconds."""
 	print ""
 	print """    Finally, you can also use --help <test...> to get more information about a specific test or tests
     (--help must be the first argument encountered. If it is, no tests will be run)"""
