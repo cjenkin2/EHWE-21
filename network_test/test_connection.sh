@@ -17,7 +17,7 @@ sudo dhclient wlan0
 # a network connection is established
 
 #Run network test commands
-wget -a wget-ubuntu.log -b http://www.ubuntu.com/start-download?distro=desktop&bits=32&release=lts &
+./download_ubuntu.sh &
 
 HOSTS="genesi-tech.com google.com apple.com"
 DEADLINE=90
