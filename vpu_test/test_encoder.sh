@@ -68,4 +68,10 @@ done
 
 #make graph of PAUSED_READY
 READY_PAUSED_DOT=$(ls $DOTDIR/* | grep "$DATE" | grep "READY_PAUSED")
-dot -Tpng -o"$GRAPHDIR/$(basename $READY_PAUSED_DOT).png" $READY_PAUSED_DOT
+
+if [ -z "$READY_PAUSED_DOT" ]
+then
+	echo "Warning: no READY_PAUSED graph of gstreamer pipeline available for $VIDEO" | tee -a $LOGFILE | cat
+else
+	dot -Tpng -o"$GRAPHDIR/$(basename $READY_PAUSED_DOT).png" $READY_PAUSED_DOT
+fi

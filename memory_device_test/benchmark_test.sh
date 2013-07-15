@@ -9,9 +9,10 @@ fi
 DEVICE=$1
 MNT=$2
 
+# read
 hdparm -t $DEVICE >> benchmark.log
 
-# mount to filesystem and write
+# write
 dd count=1k bs=1M if=/dev/zero of=$MNT/nothing.dat >> benchmark.log
 
 #cleanup
