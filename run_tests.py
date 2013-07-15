@@ -179,6 +179,8 @@ for arg in sys.argv[1:-2]:
                         state = "ARGS"          # transition (no action)
                 else:
                         print "Error:" , arg , "is not a valid test or flag"
+			usage()
+			exit(1)
         elif state=="ARGS":
                 if arg == ']':
                         state="TESTS"           # transition (no action)
