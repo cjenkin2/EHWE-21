@@ -4,4 +4,5 @@ wget -a wget-ubuntu.log -b http://www.ubuntu.com/start-download?distro=desktop&b
 
 sleep 1200
 
+killall wget
 rm start-download*
