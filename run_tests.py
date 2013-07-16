@@ -4,6 +4,7 @@ import sys
 import subprocess
 import random
 import time
+import math
 
 class Test:
         def __init__(self, command, helptxt):
@@ -84,8 +85,9 @@ def usage():
     (running the network test for no shorter than 1200 seconds on the given network and passphrase)"""
 	print ""
 	print """    Sets of tests can also be repeated for an arbitrary duration
-    by following the tests with "--duration TIME", in which case
-    the tests will run for no less than TIME seconds."""
+    by following the tests with "--duration TIME". If TIME >= 0 
+    the tests will run for no less than TIME seconds. If TIME < 0, the tests
+    will be run forever."""
 	print ""
 	print """    Finally, you can also use --help <test...> to get more information about a specific test or tests
     (--help must be the first argument encountered. If it is, no tests will be run)"""
@@ -124,12 +126,12 @@ def exec_test_block(block):
         if block[0] == '-s': # sequential
                 for test in block[1:]:
                         subprocess.call(test, shell=True)
-        elif block[0] == '-r':
+        elif block[0] == '-r': # random
                 tests = block[1:]
                 random.shuffle(tests)
                 for test in tests:
                         subprocess.call(test, shell=True)
-        elif block[0] == '-p':
+        elif block[0] == '-p': # parallel
                 procs = []
                 for test in block[1:]:
                         procs.append(subprocess.Popen(test, shell=True))
@@ -146,6 +148,8 @@ all_test_blocks = []
 # guarantee duration is always set
 if not (sys.argv[-2] == '--duration'):
         sys.argv = sys.argv + ['--duration', '0']
+
+if 31536000000
 
 # Argument parsing (minus help) as a state table of a Finite State Automaton
 #       | -word (flag)          | word (arg or test)    | () (argument_delimit)
@@ -205,6 +209,5 @@ duration = int(sys.argv[-1])
 while True:
         for block in all_test_blocks:
                 exec_test_block(block)
-        if duration < time.time() - start_time:
+        if math.abs(duration) < (time.time() - start_time) * math.signum(duration):
                 break
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
