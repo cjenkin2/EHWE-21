@@ -1,3 +1,6 @@
 cd memory_device_test; make clean; cd ..
 cd vpu_test; make clean; cd ..
 cd network_test; make clean; cd ..
+
+
+sudo rm /loremipsum.txt /nothing.dat

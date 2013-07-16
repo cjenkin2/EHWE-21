@@ -6,3 +6,5 @@ sudo killall -9 dhclient
 sudo killall -9 wpa_supplicant
 sudo killall -9 wget
 sudo killall -9 ping
+
+make clean

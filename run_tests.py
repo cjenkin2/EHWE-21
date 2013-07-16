@@ -67,9 +67,13 @@ tests_lookup = {
 tests = tests_lookup.keys() # ['network', 'vpu', 'vpu_encoder', 'gpu', 'filesystem']
 
 def usage():
+        tests_str = ""
+        for test in tests:
+                tests_str = tests_str + test + " "
+
         print "usage:" , sys.argv[0] , """< -<spr> <test <[ <args...> ]>+ >* >* <--duration TIME>+
     i.e. specify 0 or more times how (sequential, parallel, or random) 
-    to run a given list of tests. """ , tests
+    to run a given list of tests:""" , tests_str
         print ""
         print """    Each test can be optionally followed by command line arguments 
     surrounded by [  ] (whitespace is important!)"""
