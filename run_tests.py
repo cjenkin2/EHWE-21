@@ -10,7 +10,7 @@ class Test:
                 self.command = command
                 self.helptxt = helptxt
 
-flags = ['-s', '-p', 'r']
+flags = ['-s', '-p', '-r']
 tests_lookup = {
         'network'    : Test('cd ./network_test; ./run_network_test.sh', """
     Uses wpa_supplicant and dhclient to connect to network, then uses ping and wget to stress-test.
@@ -74,8 +74,8 @@ def usage():
         print """    Each test can be optionally followed by command line arguments 
     surrounded by [  ] (whitespace is important!)"""
         print ""
-	print "    e.g. '$ " , sys.argv[0] , """-p gpu [ 100 ] vpu -r memory_device network [ 1200 my_network_ssid passphrase ]' 
-    would run the gpu and vpu tests in parallel (running the gpu tests for only 100 frames), 
+	print "    e.g. '$ " , sys.argv[0] , """-p gpu [ 100 2 ] vpu -r memory_device network [ 1200 my_network_ssid passphrase ]' 
+    would run the gpu and vpu tests in parallel (running the gpu tests for only 100 frames, 2 copies of each test), 
     and then run the network and memory tests sequentially in random order
     (running the network test for no shorter than 1200 seconds on the given network and passphrase)"""
 	print ""

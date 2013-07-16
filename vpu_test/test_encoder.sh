@@ -55,6 +55,8 @@ echo "format  : $CAP"               >> $LOGFILE
 echo "params  : $PARAMS"            >> $LOGFILE
 echo "----------------------------" >> $LOGFILE
 
+echo "using pipeline:  gst-launch filesrc location=$VIDEO ! decodebin2 ! queue ! mfw_vpuencoder $PARAMS ! $CAP ! tee name=t ! queue ! filesink location=$OUTPUT_FILE t. ! queue ! avimux ! filesink location=$OUTPUT_FILE.avi"s
+
 GST_LAUNCH_OUTPUT=$(timeout 240 gst-launch filesrc location=$VIDEO ! decodebin2 ! queue ! mfw_vpuencoder $PARAMS ! $CAP ! tee name=t ! queue ! filesink location=$OUTPUT_FILE t. ! queue ! avimux ! filesink location=$OUTPUT_FILE.avi 2>&1)
 md5sum $OUTPUT_FILE > $MD5
 
