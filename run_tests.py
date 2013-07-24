@@ -152,8 +152,8 @@ if not (sys.argv[-2] == '--duration'):
 # Argument parsing (minus help) as a state table of a Finite State Automaton
 #       | -word (flag)          | word (arg or test)    | () (argument_delimit)
 #------------------------------------------------------------------------
-# INIT: | start new test block  | Error                 | Error                 |
-#       |new state: TESTS       |                       |                       |
+# INIT: | start new test block  | Error                 | Error           
+#       |new state: TESTS       |                       |                
 #------------------------------------------------------------------------
 # TESTS:| start new test block  | append to test block  | no action
 #       |new state: TESTS       | new state: TESTS      | new state: ARGS
@@ -207,5 +207,5 @@ duration = int(sys.argv[-1])
 while True:
         for block in all_test_blocks:
                 exec_test_block(block)
-        if math.abs(duration) < (time.time() - start_time) * math.signum(duration):
+        if math.fabs(duration) < (time.time() - start_time) * math.signum(duration):
                 break
