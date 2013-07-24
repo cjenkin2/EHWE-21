@@ -149,8 +149,6 @@ all_test_blocks = []
 if not (sys.argv[-2] == '--duration'):
         sys.argv = sys.argv + ['--duration', '0']
 
-if 31536000000
-
 # Argument parsing (minus help) as a state table of a Finite State Automaton
 #       | -word (flag)          | word (arg or test)    | () (argument_delimit)
 #------------------------------------------------------------------------
