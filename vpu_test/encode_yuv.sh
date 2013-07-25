@@ -62,17 +62,7 @@ md5sum $OUTPUT_FILE > $MD5
 echo "$GST_LAUNCH_OUTPUT" >> $LOGFILE
 
 #rename generated dot files
-for DOTFILE in $(ls $GST_DEBUG_DUMP_DOT_DIR/* | grep "gst-launch")
-do
-        mv $DOTFILE "$DOTDIR/encode.$YUV_BASENAME.$DATE.$(basename $DOTFILE)"
-done
+./dot_cleanup.sh "$YUV_BASENAME.$DATE" "gst-launch"
 
 #make graph of PAUSED_READY
-READY_PAUSED_DOT=$(ls $DOTDIR/* | grep "$DATE" | grep "READY_PAUSED")
-
-if [ -z "$READY_PAUSED_DOT" ]
-then
-	echo "Warning: no READY_PAUSED graph of gstreamer pipeline available for $VIDEO" | tee -a $LOGFILE | cat
-else
-	dot -Tpng -o"$GRAPHDIR/$(basename $READY_PAUSED_DOT).png" $READY_PAUSED_DOT
-fi
+mk_pipeline_graph "READY_PAUSED" $DATE
