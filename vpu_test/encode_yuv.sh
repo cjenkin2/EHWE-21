@@ -37,6 +37,7 @@ LOGFILE="encode.log"
 GRAPHDIR="$(pwd)/graphs"
 DOTDIR="$(pwd)/dots"
 MD5="$OUTPUT_FILE.md5sum"
+EXT=$(echo $CAP | cut -d"/" -f2)
 
 #code
 set_date
@@ -62,7 +63,7 @@ md5sum $OUTPUT_FILE > $MD5
 echo "$GST_LAUNCH_OUTPUT" >> $LOGFILE
 
 #rename generated dot files
-./dot_cleanup.sh "$YUV_BASENAME.$DATE" "gst-launch"
+./dot_cleanup.sh "$YUV_BASENAME.$EXT.$DATE" "gst-launch"
 
 #make graph of PAUSED_READY
 echo $(./mk_pipeline_graph.sh "READY_PAUSED" $DATE) | tee -a $LOGFILE | cat

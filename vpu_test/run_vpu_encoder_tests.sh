@@ -2,7 +2,7 @@
 
 #no YUV files, skip empty lines out output
 VID_DIR=$(pwd)/clips
-YUV_DIR=$VID_DIR/yuv
+YUV_DIR=$(pwd)/yuv
 OUT_DIR=$(pwd)/encoder/vids
 
 VIDEOS=$(ls $VID_DIR/* | grep -v yuv | grep -v ^$)
