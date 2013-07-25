@@ -12,5 +12,6 @@ if [ -z "$DOTFILE" ]
 then
 	echo "Warning: no $STAGE graph of gst pipeline available for video!"
 else
+	echo "Generating graph of $DOTFILE"
 	dot -Tpng -o"$GRAPHDIR/$(basename $DOTFILE).png" $DOTFILE
 fi

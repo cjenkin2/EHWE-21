@@ -24,6 +24,7 @@ done
 
 for YUV_FILE in $(ls $YUV_DIR/* | grep "big_buck_bunny_720x576")
 do
+	echo "Video is $YUV_FILE"
 	./encode_yuv.sh $YUV_FILE $OUT_DIR/$(basename $YUV_FILE).h264 720 576 'video/x-h264'
 	./encode_yuv.sh $YUV_FILE $OUT_DIR/$(basename $YUV_FILE).mpeg 720 576 'video/mpeg' 'codec-type=0'
 done

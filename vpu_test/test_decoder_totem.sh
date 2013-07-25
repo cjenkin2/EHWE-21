@@ -42,17 +42,7 @@ TOTEM_OUTPUT=$(timeout 40 totem --no-existing-session $VID 2>&1)
 echo "$TOTEM_OUTPUT" >> $LOGFILE
 
 #rename generated .dot files
-for DOTFILE in $(ls $GST_DEBUG_DUMP_DOT_DIR/* | grep "totem")
-do
-	mv $DOTFILE $DOTDIR/decode.$VID_FILE_BASENAME.$DATE.$(basename $DOTFILE)
-done
+./dot_cleanup.sh "$VID_FILE_BASENAME.$DATE" "totem"
 
 # make graph of pre-rolled
-PREROLLED_DOT=$(ls $DOTDIR/* | grep "$DATE" | grep "prerolled")
-
-if [ -z "$PREROLLED_DOT" ]
-then
-	echo "Warning: no graph of Totem prerolled pipeline for $VID" | tee -a $LOGFILE | cat
-else
-	dot -Tpng -o"$GRAPHDIR/$(basename $PREROLLED_DOT).png" $PREROLLED_DOT
-fi
+echo $(./mk_pipeline_graph.sh "prerolled" "$DATE") | tee -a $LOGFILE | cat
