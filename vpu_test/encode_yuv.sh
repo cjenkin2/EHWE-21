@@ -16,7 +16,7 @@ if [[ -z $6 ]]
 then
 	PARAMS=""
 else
-	PARAMS=$3
+	PARAMS=$6
 fi
 
 #helper functions
@@ -51,7 +51,7 @@ echo "using pipeline: gst-launch filesrc location=$INPUT_YUV blocksize=$BLOCKSIZ
 "\"video/x-raw-yuv,format=(fourcc)I420,width=$WIDTH,height=$HEIGHT\" ! " \
 "mfw_vpuencoder $PARAMS ! $CAP ! " \
 "tee name=t ! queue ! filesink location=$OUTPUT_FILE" \
-"t. ! queue ! avimux ! filesink location=$OUTPUT_FILE.avi"
+"t. ! queue ! avimux ! filesink location=$OUTPUT_FILE.avi" >> $LOGFILE
 
 GST_LAUNCH_OUTPUT=$(timeout 240 gst-launch filesrc location=$INPUT_YUV blocksize=$BLOCKSIZE ! \
 "video/x-raw-yuv,format=(fourcc)I420,width=$WIDTH,height=$HEIGHT" ! \
