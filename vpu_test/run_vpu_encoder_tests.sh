@@ -14,6 +14,7 @@ do
 	then
 		:
 	else
+		echo "Creating YUV file of $VIDEO"
 		./mkyuv.sh $VIDEO $YUV_DIR/$VID_BASENAME.yuv
 	fi
 done

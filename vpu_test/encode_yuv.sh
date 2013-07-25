@@ -65,4 +65,4 @@ echo "$GST_LAUNCH_OUTPUT" >> $LOGFILE
 ./dot_cleanup.sh "$YUV_BASENAME.$DATE" "gst-launch"
 
 #make graph of PAUSED_READY
-mk_pipeline_graph "READY_PAUSED" $DATE
+./mk_pipeline_graph.sh "READY_PAUSED" $DATE
