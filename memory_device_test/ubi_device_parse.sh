@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "/dev/$(echo $1 | cut -d':' -f1)"
+echo "/dev/$(echo $1 | cut -d':' -f1)_0"
