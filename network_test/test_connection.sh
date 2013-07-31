@@ -13,8 +13,8 @@ WPA_CONF=$2
 #Start the network from the command line
 sudo service network-manager stop 
 sudo killall -9 wpa_supplicant
-sudo wpa_supplicant -B -Dwext -iwlan0 -c $WPA_CONF -d 
-sudo dhclient wlan0
+timeout 1h sudo wpa_supplicant -B -Dwext -iwlan0 -c $WPA_CONF -d 
+timeout 1h sudo dhclient wlan0
 
 #TODO query for status. Program marches on to tests whether or not
 # a network connection is established
@@ -22,7 +22,7 @@ sudo dhclient wlan0
 #Run network test commands
 ./download_ubuntu.sh $TIME &
 
-HOSTS="genesi-tech.com google.com www.apple.com"
+HOSTS="genesi-tech.com google.com wikipedia.org"
 
 for HOST in $HOSTS
 do
